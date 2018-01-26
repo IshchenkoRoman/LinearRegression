@@ -43,16 +43,6 @@ class LRegr:
 		err = sum(list_) / (2 * self.l)
 		return(err)
 
-	# def computeQuadErr0(self, thetta_0, thetta_1):
-	# 	list_ = [(-2 * (y - thetta_1 * x + thetta_0)) for (x, y) in zip(self.wd[:,0], self.wd[:,1])]
-	# 	err = np.sum(list_) / (2 * self.l)
-	# 	return (err)
-
-	# def computeQuadErr1(self, thetta_0, thetta_1): 
-	# 	list_ = [(-2 * x * (y - thetta_1 * x + thetta_0)) for (x, y) in zip(self.wd[:,0], self.wd[:,1])]
-	# 	err = np.sum(list_) / (2 * self.l)
-	# 	return (err)
-
 	def plotLinearDescent(self, thetta_0=0.3, thetta_1=-0.3,alpha=0.001,epochs=1500):
 		
 		th, J_cost = self.gradDescent(thetta_0, thetta_1,alpha,epochs)
@@ -69,16 +59,6 @@ class LRegr:
 		plt.legend(loc=4)
 
 		plt.show()
-
-	# def computeQuadErr0(self, thetta_0, thetta_1):
-	# 	list_ = [(((thetta_0 + thetta_1 * x) - y)) for (x, y) in zip(self.wd[:,0], self.wd[:,1])]
-	# 	err = np.sum(list_) / self.l
-	# 	return(err)
-
-	# def computeQuadErr1(self, thetta_0, thetta_1):
-	# 	list_ = [((((thetta_0 + thetta_1 * x) - y) * x)) for (x, y) in zip(self.wd[:,0], self.wd[:,1])]
-	# 	err = np.sum(list_) / self.l
-	# 	return(err)
 
 	def computeQuadErr0(self, thetta_0, thetta_1):
 		list_ = [(2 * (thetta_0 + thetta_1 * x - y)) for (x, y) in zip(self.wd[:,0], self.wd[:,1])]
@@ -98,7 +78,6 @@ class LRegr:
 
 		for i in np.arange(0, epochs):
 
-			#print(t_0, t_1)
 			t_01 = t_0 - (alpha * self.computeQuadErr0(t_0, t_1))
 			t_11 = t_1 - (alpha * self.computeQuadErr1(t_0, t_1))
 
@@ -131,7 +110,6 @@ class LRegr:
 			t_0, t_1 = self.gradStep(t_0, t_1, alpha)
 			J_hist[i] = self.costFunct(t_0, t_1)
 
-		#print(t_0, t_1)
 		return ([t_0, t_1], J_hist)
 
 	def plotJ_hist(self, thetta_0=.3, thetta_1=-.3):
@@ -173,38 +151,15 @@ class LRegr:
 		ax.set_zlabel('Error')
 		plt.show()
 
-
-	def linearRegression(self, thetta_0=0.0, thetta_1=0.0, alpha=0.01, epochs=1500):
-		
-		thetta_01 = 0.0
-		thetta_11 = 0.0
-		thetta_prev_0 = 0.0
-		thetta_prev_1 = 0.0
-
-		i = 0
-		while (i <= epochs):
-			thetta_prev_0 = thetta_0
-			thetta_prev_1 = thetta_1
-			c1 = [(thetta_0 + thetta_1*x - y) for (x, y) in zip(self.wd['Weight'], self.wd['Height'])]
-			c2 = [((thetta_0 + thetta_1*x - y)*x) for (x, y) in zip(self.wd['Weight'], self.wd['Height'])]
-			#print(c1)
-			thetta_01 = thetta_0 - alpha * (1.0 / self.l) * sum(c1)#float([(thetta_0 + thetta_1*x - y) for (x, y) in zip(self.wd['LotArea'], self.wd['SalePrice'])])
-			thetta_11 = thetta_1 - alpha * (1.0 / self.l) * sum(c2)#float([((thetta_0 + thetta_1*x - y)*x) for (x, y) in zip(self.wd['LotArea'], self.wd['SalePrice'])])
-
-			thetta_0 = thetta_01
-			thetta_1 = thetta_11
-			i += 1
-		return ([thetta_0, thetta_1])
-
 def main():
 	st = "/home/rishchen/Source/ML/CourseTF/Tensorflow-Bootcamp-master/SourceCode/data.txt"
 	LR = LRegr(st)
 	#print(LR.wd[:,1])
 	#LR.plotJ_hist()
 	LR.plotLinearDescent()
-	#LR.plotGraphic()
-	#print(LR.costFunct())
-	#print(LR.gradDescent())
+	LR.plotGraphic()
+	print(LR.costFunct())
+	print(LR.gradDescent())
 
 
 if __name__ == '__main__':
